@@ -1,0 +1,61 @@
+/* styles.css - Estilos de la plataforma de subastas JavaFX */
+
+.root {
+    -fx-background-color: #f4f6fb;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.contenedor {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 10, 0, 0, 3);
+}
+
+.titulo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a3a6b;
+    -fx-padding: 0 0 8 0;
+}
+
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #444444;
+}
+
+.campo {
+    -fx-font-size: 13px;
+    -fx-background-color: #f0f4ff;
+    -fx-border-color: #b0bfe8;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6 10 6 10;
+}
+
+.campo:focused {
+    -fx-border-color: #2456c8;
+    -fx-background-color: #eaf0ff;
+}
+
+.boton-principal {
+    -fx-background-color: #2456c8;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 0 8 0;
+    -fx-cursor: hand;
+}
+
+.boton-principal:hover {
+    -fx-background-color: #1a3a9e;
+}
+
+.hyperlink {
+    -fx-text-fill: #2456c8;
+    -fx-font-size: 12px;
+}
+
+.separator {
+    -fx-padding: 4 0 4 0;
+}
