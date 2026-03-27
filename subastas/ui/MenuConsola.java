@@ -1,7 +1,7 @@
-package subastas.ui;
+package ccopaccana.ivan.ui;
 
-import subastas.dominio.*;
-import subastas.logica.ControladorSubastas;
+import ccopaccana.ivan.dominio.*;
+import ccopaccana.ivan.logica.ControladorSubastas;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,6 +62,8 @@ public class MenuConsola {
             System.out.println("4. Listado de subastas");
             System.out.println("5. Creación de ofertas");
             System.out.println("6. Listado de ofertas");
+            System.out.println("7. Inicio de sesión");
+            System.out.println("8. Validar existencia de moderador");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = leerEntero();
@@ -73,6 +75,8 @@ public class MenuConsola {
                 case 4 -> listarSubastas();
                 case 5 -> crearOferta();
                 case 6 -> listarOfertas();
+                case 7 -> iniciarSesion();
+                case 8 -> validarModerador();
                 case 0 -> System.out.println("¡Hasta luego!");
                 default -> System.out.println("Opción no válida.");
             }
@@ -198,6 +202,8 @@ public class MenuConsola {
 
     /**
      * Flujo para crear una nueva oferta en una subasta.
+     * Valida que el oferente no sea Moderador, Vendedor ni el creador de la subasta
+     * antes de solicitar el precio.
      */
     private static void crearOferta() {
         System.out.println("\n-- Crear Oferta --");
@@ -232,6 +238,20 @@ public class MenuConsola {
         }
         Usuario oferente = usuarios.get(ui);
 
+        // Validaciones previas al ingreso del precio
+        if (oferente instanceof Moderador) {
+            System.out.println("Error: El moderador no puede realizar ofertas.");
+            return;
+        }
+        if (oferente instanceof Vendedor) {
+            System.out.println("Error: El vendedor no puede realizar ofertas.");
+            return;
+        }
+        if (oferente.equals(subasta.getCreador())) {
+            System.out.println("Error: El creador de la subasta no puede realizar ofertas en ella.");
+            return;
+        }
+
         System.out.print("Precio a ofertar: ");
         double precio = leerDouble();
 
@@ -263,6 +283,39 @@ public class MenuConsola {
             System.out.println("No hay ofertas en esta subasta.");
         } else {
             ofertas.forEach(System.out::println);
+        }
+    }
+
+    /**
+     * Flujo de inicio de sesión desde consola.
+     * Solicita correo y contraseña, e informa si el acceso fue exitoso.
+     */
+    private static void iniciarSesion() {
+        System.out.println("\n-- Inicio de Sesión --");
+        System.out.print("Correo electrónico: ");
+        String correo = scanner.nextLine().trim();
+        System.out.print("Contraseña: ");
+        String contrasena = scanner.nextLine().trim();
+
+        Usuario usuario = controlador.iniciarSesion(correo, contrasena);
+        if (usuario != null) {
+            System.out.println("Sesión iniciada correctamente. Bienvenido/a, " + usuario.getNombreCompleto() + ".");
+            System.out.println("Tipo de usuario: " + usuario.getClass().getSimpleName());
+        } else {
+            System.out.println("Error: Correo o contraseña incorrectos.");
+        }
+    }
+
+    /**
+     * Verifica y muestra en pantalla si existe un moderador registrado en el sistema.
+     */
+    private static void validarModerador() {
+        System.out.println("\n-- Validación de Moderador --");
+        if (controlador.existeModerador()) {
+            System.out.println("Existe un moderador registrado: " +
+                    controlador.getModerador().getNombreCompleto());
+        } else {
+            System.out.println("No hay ningún moderador registrado en el sistema.");
         }
     }
 
